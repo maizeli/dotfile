@@ -1,0 +1,139 @@
+" 小技巧，双击<shift>在弹出的窗口中进入action tab，输入track action
+" ids，打开action的开关，这样在执行某个操作的时候输出对应的action id
+let mapleader = ' '
+Plug 'tpope/vim-surround'
+Plug 'easymotion/vim-easymotion'
+Plug 'preservim/nerdtree'
+Plug 'terryma/vim-multiple-cursors'
+
+
+set scrolloff=5
+set incsearch
+set ignorecase
+set smartcase
+set showmode
+set ideajoin
+" Map vim marks to IDEA global marks
+set ideamarks
+
+imap <c-f> <right>
+imap <c-b> <left>
+imap <c-a> <esc>I
+imap <c-e> <esc>A
+" IdeaVimExtension插件
+set keep-english-in-normal
+
+nnoremap <leader>q :q<cr>
+nnoremap <leader>w :w<cr>
+nnoremap <leader>/ :set nohlsearch<cr>
+nnoremap / :set hlsearch<cr>/
+"关闭/开启除代码框外的所有窗口
+nnoremap <c-c> :action HideAllWindows<CR>
+"关闭tab
+nnoremap <leader>cr :action CloseAllToTheRight<CR>
+nnoremap <leader>cl :action CloseAllToTheLeft<CR>
+nnoremap <leader>ca :action CloseAllEditors<CR>
+nnoremap <leader>co :action CloseAllEditorsButActive<CR>
+" 快速移动到错误
+map ge <Action>(GotoNextError)
+map gE <Action>(GotoPreviousError)
+"格式化代码
+map <leader>fc <Action>(ReformatCode)
+" git blame
+map gb :action Annotate<cr>
+" 折叠
+map zc <Action>(CollapseRegion)
+map zo <Action>(ExpandRegion)
+" 向右分屏
+" <c-w>s <c-w>v 也可以
+map <c-\> <Action>(SplitVertically)
+" 向下分屏
+map <c-/> <Action>(SplitHorizontally)
+"打开终端
+map <c-t> :action ActivateTerminalToolWindow<CR>
+"增强折叠
+map <leader>zc <Action>(CollapseAllRegions)
+map <leader>zo <Action>(ExpandAllRegions)
+" 新窗口编辑文件
+" map <leader>en <Action>(EditSourceInNewWindow)
+" 最大化Tab or 恢复
+map <c-m> <Action>(MaximizeEditorInSplit)
+" split之间移动光标 " 在多行选项卡时这里会有问题,https://youtrack.jetbrains.com/issue/VIM-795/Ctrl-w-h-doesnt-alway-work-window-navigation-to-the-left-window
+nnoremap <c-h>  <c-w>h
+nnoremap <c-l>  <c-w>l
+nnoremap <c-j>  <c-w>j
+nnoremap <c-k>  <c-w>k
+
+nnoremap <c-w>j :action MoveTabDown<CR>
+nnoremap <c-w>l :action MoveTabRight<CR>
+nnoremap <c-w>o :action MoveEditorToOppositeTabGroup<CR>
+
+" tab之间移动
+map L :action NextTab<CR>
+map H :action PreviousTab<CR>
+
+nnoremap <leader>gt :action GotoTest<cr>
+" 上一个方法
+nnoremap [m :action MethodUp<cr>
+" 下一个方法
+nnoremap ]m :action MethodDown<cr>
+" 重命名
+nnoremap <leader>rn :action RenameElement<cr>
+" 重命名文件
+nnoremap <leader>rm :action RenameFile<CR>
+" 移动当前行
+" :m .+1 :m.-2 可实现同样功能
+nnoremap <a-j> :action MoveLineDown<CR>
+nnoremap <a-k> :action MoveLineUp<CR>
+inoremap <a-j> :action MoveLineDown<CR>
+inoremap <a-k> :action MoveLineUp<CR>
+" 注释
+nnoremap gcc :action CommentByLineComment<CR>
+vnoremap gc :action CommentByLineComment<CR>
+" 打开文件树
+nnoremap <c-e> :action ActivateProjectToolWindow<CR>
+" 移动到上/下改动点 只能在git仓库中使用
+nnoremap [c :action VcsShowPrevChangeMarker<cr>
+nnoremap ]c :action VcsShowNextChangeMarker<cr>
+" generate
+nnoremap <leader>G :action Generate<CR>
+" 搜索内容
+nnoremap <leader>sc :action FindInPath<CR>
+" 搜索文件
+nnoremap <leader>sf :action GotoFile<CR>
+" NOT WORK
+nnoremap <D-p> :action GotoFile<CR>
+" 显示文件路径 可以在finder中打开
+nnoremap <leader>fp :action ShowFilePath<CR>
+" 查找引用当前对象的文件
+nnoremap <leader>fu :action FindUsages<CR>
+" 当前文件编辑历史
+nnoremap <leader>sh :action LocalHistory.ShowHistory<CR>
+" 改变窗口大小
+nnoremap <c-w>- :action StretchSplitToBottom<CR>
+nnoremap <c-w>< :action StretchSplitToLeft<CR>
+nnoremap <c-w>> :action StretchSplitToRight<CR>
+nnoremap <c-w>+ :action StretchSplitToTop<CR>
+" 查找接口实现
+nnoremap gi :action GotoImplementation<CR>
+"跳转到接口定义
+nnoremap gsm :action GotoSuperMethod<CR>
+" 切换打开的项目
+nnoremap <leader>w :action GoToProject<CR>
+" 在文件树显示当前打开的文件
+nnoremap <leader>e :action SelectInProjectView<CR>
+" 显示当前光标字段类型 看这里就知道Goland是个套壳的IDEA了
+nnoremap <leader>qd :action QuickJavaDoc<CR>
+" NOT WORK
+" nnoremap <leader>j :action PrevSplitter<CR>j
+" nnoremap <leader>k :action PrevSplitter<CR>k
+" nnoremap <leader>u :action PrevSplitter<CR><c-u>
+" nnoremap <leader>d :action PrevSplitter<CR><c-d>
+" 选中的语句封装为一个函数
+vnoremap <leader>em :action ExtractMethod<CR>
+" 显示详细错误信息
+nnoremap <leader>se :action ShowErrorDescription<CR>
+" 进入清爽模式
+nnoremap <leader>df :action ToggleDistractionFreeMode<CR>
+" 函数调用链路
+nnoremap <leader>ch :action CallHierarchy<CR>
