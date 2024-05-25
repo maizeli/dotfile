@@ -12,9 +12,14 @@ set incsearch
 set ignorecase
 set smartcase
 set showmode
+" 类似f F的插件，不同之处是其接受两个字符，跳转更精准，需要下载插件IdeaVim Sneak
+" set sneak
+" https://github.com/JetBrains/ideavim/blob/master/doc/ideajoin-examples.md
 set ideajoin
 " Map vim marks to IDEA global marks
 set ideamarks
+" 需下载插件Which-key
+" set which-key
 
 imap <c-f> <right>
 imap <c-b> <left>
@@ -25,15 +30,20 @@ set keep-english-in-normal
 
 nnoremap <leader>q :q<cr>
 nnoremap <leader>w :w<cr>
-nnoremap <leader>/ :set nohlsearch<cr>
-nnoremap / :set hlsearch<cr>/
+" 更新到最新版本IDE之后，映射不生效了，暂时先注释掉
+" nnoremap <leader>/ :set nohlsearch<cr>
+" nnoremap / :set hlsearch<cr>/
 "关闭/开启除代码框外的所有窗口
 nnoremap <c-c> :action HideAllWindows<CR>
+
 "关闭tab
 nnoremap <leader>cr :action CloseAllToTheRight<CR>
 nnoremap <leader>cl :action CloseAllToTheLeft<CR>
 nnoremap <leader>ca :action CloseAllEditors<CR>
 nnoremap <leader>co :action CloseAllEditorsButActive<CR>
+" 关闭未发生改变的Tab 好像是基于git实现的
+nnoremap <leader>cu :action CloseAllUnmodifiedEditors<CR>
+
 " 快速移动到错误
 map ge <Action>(GotoNextError)
 map gE <Action>(GotoPreviousError)
@@ -131,9 +141,21 @@ nnoremap <leader>qd :action QuickJavaDoc<CR>
 " nnoremap <leader>d :action PrevSplitter<CR><c-d>
 " 选中的语句封装为一个函数
 vnoremap <leader>em :action ExtractMethod<CR>
-" 显示详细错误信息
+"显示详细错误信息
 nnoremap <leader>se :action ShowErrorDescription<CR>
-" 进入清爽模式
-nnoremap <leader>df :action ToggleDistractionFreeMode<CR>
 " 函数调用链路
 nnoremap <leader>ch :action CallHierarchy<CR>
+" Display options
+map <leader>dd <action>(ToggleDistractionFreeMode)
+map <leader>dz <action>(ToggleZenMode)
+map <leader>df <action>(ToggleFullScreen)
+
+" Actions
+" alter+enter
+map <leader>am <action>(ShowIntentionActions)
+" shift+shift
+map <leader>as <action>(SearchEverywhere)
+
+
+" 参考配置
+" https://www.cyberwizard.io/posts/the-ultimate-ideavim-setup/
