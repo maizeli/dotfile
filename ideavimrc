@@ -41,7 +41,7 @@ nnoremap <leader>cr :action CloseAllToTheRight<CR>
 nnoremap <leader>cl :action CloseAllToTheLeft<CR>
 nnoremap <leader>ca :action CloseAllEditors<CR>
 nnoremap <leader>co :action CloseAllEditorsButActive<CR>
-" 关闭未发生改变的Tab 好像是基于git实现的
+" 关闭未发生改变的Tab 基于git实现的
 nnoremap <leader>cu :action CloseAllUnmodifiedEditors<CR>
 
 " 快速移动到错误
@@ -111,7 +111,7 @@ nnoremap <leader>G :action Generate<CR>
 nnoremap <leader>sc :action FindInPath<CR>
 " 搜索文件
 nnoremap <leader>sf :action GotoFile<CR>
-" NOT WORK
+" 类似vscode中的<command>+p功能
 nnoremap <D-p> :action GotoFile<CR>
 " 显示文件路径 可以在finder中打开
 nnoremap <leader>fp :action ShowFilePath<CR>
@@ -146,9 +146,9 @@ nnoremap <leader>se :action ShowErrorDescription<CR>
 " 函数调用链路
 nnoremap <leader>ch :action CallHierarchy<CR>
 " Display options
-map <leader>dd <action>(ToggleDistractionFreeMode)
-map <leader>dz <action>(ToggleZenMode)
-map <leader>df <action>(ToggleFullScreen)
+map <leader>dd <action>(ToggleDistractionFreeMode) " 禅模式
+map <leader>dz <action>(ToggleZenMode)  " 跟禅模式好像没有区别
+map <leader>df <action>(ToggleFullScreen) " 打开/关闭全屏
 
 " Actions
 " alter+enter
