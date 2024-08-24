@@ -31,8 +31,8 @@ set keep-english-in-normal
 nnoremap <leader>q :q<cr>
 nnoremap <leader>w :w<cr>
 " 更新到最新版本IDE之后，映射不生效了，暂时先注释掉
-" nnoremap <leader>/ :set nohlsearch<cr>
-" nnoremap / :set hlsearch<cr>/
+nnoremap <leader>/ :set nohlsearch<cr>
+nnoremap / :set hlsearch<cr>/
 "关闭/开启除代码框外的所有窗口
 nnoremap <c-c> :action HideAllWindows<CR>
 
@@ -83,7 +83,7 @@ map L :action NextTab<CR>
 map H :action PreviousTab<CR>
 
 nnoremap <leader>gt :action GotoTest<cr>
-" 上一个方法
+" 上一个方法 如果当前位于方法内，会跳转到函数的开头
 nnoremap [m :action MethodUp<cr>
 " 下一个方法
 nnoremap ]m :action MethodDown<cr>
