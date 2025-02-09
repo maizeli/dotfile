@@ -12,7 +12,6 @@ set wildmenu " 命令自动补全
 set wildmode=list:longest
 set autowrite " 自动保存
 set ttimeoutlen=0
-set path+=**
 if has("mouse")
 	set mouse=a
 endif
@@ -23,9 +22,7 @@ set statusline=
 " 添加新的statusline内容
 set statusline+=%F "显示当前buffer绝对路径
 set cursorline
-set nocompatible
-syntax enable
-filetype plugin on
+syntax on
 
 " 改变不同模式下的光标样式  https://vim.fandom.com/wiki/Change_cursor_shape_in_different_modes
 " Iterm2 https://iterm2.com/documentation/2.1/documentation-escape-codes.html
@@ -43,7 +40,7 @@ if exists('$TMUX')
 endif
 
 " 自动切换输入法 github仓库 https://github.com/daipeihust/im-select
-autocmd InsertLeave * :silent !im-select com.apple.keylayout.ABC
+" autocmd InsertLeave * :silent !im-select com.apple.keylayout.ABC
 
 imap <c-f> <right>
 imap <c-b> <left>
@@ -149,6 +146,7 @@ Plug 'dense-analysis/ale'
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'easymotion/vim-easymotion'
+Plug 'christoomey/vim-tmux-navigator'
 if g:python3_supported
 	Plug 'SirVer/ultisnips'
 
@@ -161,8 +159,7 @@ Plug 'iamcco/markdown-preview.nvim', { 'do': { -> mkdp#util#install() }, 'for': 
 Plug 'chriskempson/base16-vim'
 Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'joshdick/onedark.vim'
-" Plug 'christoomey/vim-tmux-navigator'
-Plug 'joshdick/onedark.vim'
+Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
 
 "============== PaperColor =================
@@ -186,8 +183,8 @@ colorscheme PaperColor"
 " colorscheme 3dglasses
 
 " ==== ondark ===
-syntax on
-colorscheme onedark
+" syntax on
+" colorscheme onedark
 " ==== onedark ===
 
 "============== easymotion ================
@@ -200,7 +197,6 @@ nmap <Leader>w <Plug>(easymotion-overwin-w)
 "============== easymotion ================
 "
 "
-" copy from https://github.com/skywind3000/vim
 " 0:up, 1:down, 2:pgup, 3:pgdown, 4:top, 5:bottom
 function! Tools_PreviousCursor(mode)
 	if winnr('$') <= 1
@@ -230,65 +226,27 @@ function! Tools_PreviousCursor(mode)
 	endif
 	noautocmd silent! wincmd p
 endfunc
-" 在当前window切换scroll另外一个window
+
 noremap <silent><leader>su :call Tools_PreviousCursor(6)<cr>
 noremap <silent><leader>sd :call Tools_PreviousCursor(7)<cr>
 
-vnoremap <silent>t :call DoSnakeCamelTrans()<CR>
-nnoremap <leader>t viw:call DoSnakeCamelTrans()<CR>
-" ====== 蛇形-驼峰互相转换 ====
-" TestHelloWorld
-function DoSnakeCamelTrans()
-	execute 'normal! gvy'
-	let text = getreg('"')
-	execute 'normal! gvs' . ToggleTransSnakeCamel(text)
-	execute 'normal! \<ESC>'
-
-	return ''
+function! InsertGoFuncName()
+    " 保存当前光标位置
+    let save_cursor = getpos('.')
+    " 向上搜索以func开头的行，不移动光标
+    let func_line = search('^\s*func\s*\(([^)]*)\s\+\)\?\zs\w\+', 'bWn')
+    if func_line == 0
+        call setpos('.', save_cursor)
+        return ''
+    endif
+    " 获取匹配行内容
+    let line = getline(func_line)
+    " 提取函数名
+    let func_name = matchstr(line, '^\s*func\s*\(([^)]*)\s\+\)\?\zs\w\+')
+    " 恢复光标位置
+    call setpos('.', save_cursor)
+	execute "normal! a" . func_name
+    return func_name
 endfunction
 
-function ToggleTransSnakeCamel(str)
-	if stridx(a:str, '_') != -1
-		return TransSnake2Camel(a:str)
-	endif
-	return TransCamel2Snake(a:str)
-endfunction
-
-function TransSnake2Camel(str)
-	let res = ''
-	let lastUnderLinePos = -1
-	for i in range(0, len(a:str)-1)
-		if i == lastUnderLinePos + 1
-			let res = res . toupper(a:str[i])
-		elseif a:str[i] == '_'
-			let lastUnderLinePos = i
-		else
-			let res = res . a:str[i]
-		endif
-	endfor
-	return res
-endfunction
-
-function TransCamel2Snake(str)
-	let res = ''
-	for i in range(0, len(a:str)-1)
-		if IsUpperCase(a:str[i])
-			if i != 0
-				let res = res . '_'
-			endif
-			let res = res . tolower(a:str[i])
-		else
-			let res = res . a:str[i]
-		endif
-	endfor
-	return res
-endfunction
-
-function IsUpperCase(char)
-	return char2nr(a:char) >= 65 && char2nr(a:char)<=90
-endfunction
-
-function! IsLowerCase(char)
-    return char2nr(a:char) >= 97 && char2nr(a:char) <= 122
-endfunction
-" ====== 蛇形-驼峰互相转换 ====
+nnoremap <leader>igf :call InsertGoFuncName()<CR>
