@@ -249,4 +249,4 @@ function! InsertGoFuncName()
     return func_name
 endfunction
 
-nnoremap <leader>igf :call InsertGoFuncName()<CR>
+nnoremap <leader>fn :call InsertGoFuncName()<CR>
